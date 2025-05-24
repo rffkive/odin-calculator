@@ -60,8 +60,9 @@ const operationBtn = document.querySelectorAll(".operationButton");
 
 operationBtn.forEach ((button) => {
     button.addEventListener("click", () => {
-        operator += button.textContent;
-        operatorTrue = operator.slice(-1);
+        let operatorTemp;
+        operatorTemp += button.textContent;
+        operator = operatorTemp.slice(-1);
         currentDisplay = "";
     });
 });
