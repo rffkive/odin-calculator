@@ -1,5 +1,5 @@
 * {
-    border: 1px dotted black;
+   
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -16,4 +16,13 @@ body {
 #container {
     padding: 1rem;
     background-color: blueviolet;
+}
+
+.answer {
+    max-width: 320px;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+    border: 1px solid #000;
+    margin-bottom: 20px;
 }
