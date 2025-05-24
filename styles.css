@@ -1,0 +1,19 @@
+* {
+    border: 1px dotted black;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: hsl(212, 45%, 89%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+#container {
+    padding: 1rem;
+    background-color: blueviolet;
+}
