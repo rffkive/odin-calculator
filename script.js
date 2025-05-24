@@ -35,3 +35,17 @@ function operate (operator, a, b) {
 };
 
 console.log (operate("+",4,3));
+
+const display = document.querySelector("#display");
+const numberBtn = document.querySelectorAll(".number");
+
+let currentDisplay = "";
+
+numberBtn.forEach ((button) => {
+    button.addEventListener("click", () => {
+        currentDisplay += button.textContent;      
+        display.textContent = currentDisplay;
+    });
+});
+
+  
