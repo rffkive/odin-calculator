@@ -1,5 +1,5 @@
 * {
-   
+    border: 1px dotted black;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -26,3 +26,23 @@ body {
     border: 1px solid #000;
     margin-bottom: 20px;
 }
+
+.button {
+    display: flex;
+    gap: 16px;
+}
+
+.numberBtn {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    flex: 2;
+}
+
+.extraBtn {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
