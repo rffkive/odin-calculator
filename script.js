@@ -15,7 +15,7 @@ function subtract (a,b) {
 function divide (a,b) {
     if (b === 0) 
     { 
-        return "ERROR WAKARIMASEN >.<";
+        return "ERROR >.<";
     }
     return a / b;
 }
@@ -30,16 +30,7 @@ function operate(operator, a, b) {
         '/': divide
     };
     
-    if (operations[operator]) {
-        const result = operations[operator](a, b);
-        // Handle division by zero error
-        if (typeof result === 'string' && result.includes('ERROR')) {
-            return result;
-        }
-        // Round to avoid floating point precision issues
-        return Math.round(result * 1000000000) / 1000000000;
-    }
-    return b;
+    return operations[operator] ? operations[operator](a, b) : b;
 }
 
 // array for calculation logic
@@ -97,7 +88,7 @@ function inputOperator (nextOperator) {
 
     if (AfterEqual) {
         AfterEqual = false;
-    };
+    }
 
     if (calculationArray.length >= 2 && !AfterOperator) {
         const lastOperator = calculationArray[calculationArray.length - 1];
@@ -110,12 +101,17 @@ function inputOperator (nextOperator) {
         console.log(calculationArray);
         updateDisplay();
     } else {
-        calculationArray.push(inputValue);
-        console.log(calculationArray);
+        const lastElement = calculationArray[calculationArray.length - 1];
+        if (typeof lastElement === 'number' || calculationArray.length === 0) {
+            calculationArray.push(inputValue);
+        } else {
+            calculationArray.pop();
+        }
     }
 
     calculationArray.push(nextOperator);
     console.log(calculationArray);
+    console.log(inputValue);
     AfterOperator = true;
 }
 
@@ -135,21 +131,24 @@ function inputEqual () {
     console.log(inputValue);
     console.log(calculationArray);
 
-    if (calculationArray.length > 2) {
-    calculationArray.push(inputValue);
-    const firstNumber = calculationArray[0];
-    const lastOperator = calculationArray[1];
-    console.log (`${firstNumber} ${lastOperator} ${inputValue}`);
-    const result = operate (lastOperator, firstNumber, inputValue);
-    displayValue = result;
-    updateDisplay();
-    AfterEqual = true;
-    } else { 
-        displayValue = "not a complete eqn";
+    if (calculationArray.length >= 1) {
+        calculationArray.push(inputValue);
+        if (calculationArray.length >= 3) {
+            const firstNumber = calculationArray[0];
+            const lastOperator = calculationArray[1];
+            const result = operate(lastOperator, firstNumber, inputValue);
+            displayValue = result;
+            calculationArray = [result];
+            updateDisplay();
+        } else {
+            displayValue = "ERROR";
+            updateDisplay();
+        }
+    } else {
+        displayValue = "ERROR";
         updateDisplay();
-        AfterEqual = true;
     }
-    
+    AfterEqual = true;
 }
 
 const equalBtn = document.querySelector(".equal");
