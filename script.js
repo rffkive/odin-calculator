@@ -51,7 +51,7 @@ function updateDisplay () {
 
 //button for number
 function inputNumber(num) {
-    if (AfterEqual) {
+    if (AfterEqual || displayValue === "ERROR >.<" || displayValue === "ERROR") {
         calculationArray = [];
         displayValue = "";
         AfterEqual = false;
@@ -78,7 +78,9 @@ numberBtn.forEach ((button) => {
 
 //button for operation
 
-function inputOperator (nextOperator) {
+function inputOperator(nextOperator) {
+        if (calculationArray.length === 0 && displayValue === "0") return;
+
     const inputValue = parseFloat(displayValue);
 
     if (AfterEqual) {
@@ -147,7 +149,7 @@ equalBtn.addEventListener("click", () => {
     return inputEqual();
 })
 
-
+// add clear button
 function clearAll() {
     calculationArray = [];
     displayValue = "0";
