@@ -22,20 +22,25 @@ function divide (a,b) {
 
 
 //function for operation to process
-function operate (operator, a, b) {
-    switch (operator) 
-    {
-        case '+':
-          return add(a, b);
-        case '-':
-          return subtract(a, b);
-        case '*':
-          return product (a, b);
-        case '/':
-          return divide(a, b);
+function operate(operator, a, b) {
+    const operations = {
+        '+': add,
+        '-': subtract,
+        '*': product,
+        '/': divide
     };
-    return operations[operator] ? operations[operator](a, b) : b;
-};
+    
+    if (operations[operator]) {
+        const result = operations[operator](a, b);
+        // Handle division by zero error
+        if (typeof result === 'string' && result.includes('ERROR')) {
+            return result;
+        }
+        // Round to avoid floating point precision issues
+        return Math.round(result * 1000000000) / 1000000000;
+    }
+    return b;
+}
 
 // array for calculation logic
 let calculationArray = [];
@@ -53,11 +58,13 @@ function updateDisplay () {
     display.textContent = displayValue;
 }
 
-//button for number and show in display
+//button for number
 function inputNumber(num) {
     if (AfterEqual) {
         calculationArray = [];
+        displayValue = "";
         AfterEqual = false;
+        console.log ("reset");
     }  
     if (AfterOperator) {
         displayValue = num;
@@ -95,6 +102,7 @@ function inputOperator (nextOperator) {
     if (calculationArray.length >= 2 && !AfterOperator) {
         const lastOperator = calculationArray[calculationArray.length - 1];
         const firstNumber = calculationArray[calculationArray.length - 2];
+        console.log(calculationArray);
         console.log (`${firstNumber} ${lastOperator} ${inputValue}`);
         const result = operate (lastOperator, firstNumber, inputValue);
         calculationArray = [result];
@@ -111,8 +119,6 @@ function inputOperator (nextOperator) {
     AfterOperator = true;
 }
 
-
-
 const operationBtn = document.querySelectorAll(".operationButton");
 
 operationBtn.forEach ((button) => {
@@ -121,43 +127,34 @@ operationBtn.forEach ((button) => {
     });
 });
 
-function expression () {
-        //currentinput;
-        //put currentinput to first value;
-        //operation;
-        //currentiput;
-        //put currentinput to second value;
-        //operate ()
 
-        //
-};
+//button for equal
 
+function inputEqual () {
+    const inputValue = parseFloat(displayValue);
+    console.log(inputValue);
+    console.log(calculationArray);
 
-// clear button
-// const clear = document.querySelector(".clear");
-
-// clear.addEventListener ("click", ()=> {
-//     currentInput = '';
-//     expression = [];
-//     updateDisplay('YOUR ANSWER HERE');
-// });
-
-
-//const equalBtn = document.querySelector(".equal");
-
-// equalBtn.addEventListener("click", () => {
-//     console.log(`${firstNumber} ${operator} ${secondNumber}`);
-//     operate (operator, firstNumber, secondNumber);
-//     console.log(`${firstNumber} ${operator} ${secondNumber} = ${total}`);
+    if (calculationArray.length > 2) {
+    calculationArray.push(inputValue);
+    const firstNumber = calculationArray[0];
+    const lastOperator = calculationArray[1];
+    console.log (`${firstNumber} ${lastOperator} ${inputValue}`);
+    const result = operate (lastOperator, firstNumber, inputValue);
+    displayValue = result;
+    updateDisplay();
+    AfterEqual = true;
+    } else { 
+        displayValue = "not a complete eqn";
+        updateDisplay();
+        AfterEqual = true;
+    }
     
-//     display.textContent = total;
-//     firstNumber = "";
-//     secondNumber = "";
-//     operator = "";
-//     currentDisplay = "";
-// });
+}
 
-// reduce array
-// first iteration a + b = c
-// second iteration c + b = c
-// third iteration c+ b = c
+const equalBtn = document.querySelector(".equal");
+
+equalBtn.addEventListener("click", () => {
+    return inputEqual();
+})
+
