@@ -159,3 +159,14 @@ function clearAll() {
 const clearbtn = document.querySelector(".clear");
 
 clearbtn.addEventListener("click", () => clearAll());
+
+// add decimal button
+function inputDecimal() {
+    if (!displayValue.includes('.')) {
+        displayValue += '.';
+        updateDisplay();
+    }
+}
+
+const decimalBtn = document.querySelector(".decimal");
+decimalBtn.addEventListener("click", inputDecimal);

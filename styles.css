@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap');
 
+
 * {
     margin: 0;
     padding: 0;
@@ -150,8 +151,8 @@ body::after {
     flex: 0 0 calc(33.333% - 8px);
 }
 
-.numberBtn .number:last-child {
-    flex: 0 0 calc(100%);
+.numberBtn .number:nth-child(10) {
+    flex: 0 0 calc(66.66% - 5px);
 }
 
 .extraBtn button {
