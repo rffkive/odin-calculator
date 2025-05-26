@@ -55,18 +55,13 @@ function inputNumber(num) {
         calculationArray = [];
         displayValue = "";
         AfterEqual = false;
-        console.log ("reset");
     }  
     if (AfterOperator) {
         displayValue = num;
         AfterOperator = false;
-        console.log("first stop");
-        console.log (displayValue);
     } 
     else {
         displayValue = displayValue === '0' ? num : displayValue + num;
-        console.log("second stop");
-        console.log (displayValue);
     }
 
     updateDisplay();
@@ -93,12 +88,9 @@ function inputOperator (nextOperator) {
     if (calculationArray.length >= 2 && !AfterOperator) {
         const lastOperator = calculationArray[calculationArray.length - 1];
         const firstNumber = calculationArray[calculationArray.length - 2];
-        console.log(calculationArray);
-        console.log (`${firstNumber} ${lastOperator} ${inputValue}`);
         const result = operate (lastOperator, firstNumber, inputValue);
         calculationArray = [result];
         displayValue = result;
-        console.log(calculationArray);
         updateDisplay();
     } else {
         const lastElement = calculationArray[calculationArray.length - 1];
@@ -110,8 +102,6 @@ function inputOperator (nextOperator) {
     }
 
     calculationArray.push(nextOperator);
-    console.log(calculationArray);
-    console.log(inputValue);
     AfterOperator = true;
 }
 
@@ -126,34 +116,46 @@ operationBtn.forEach ((button) => {
 
 //button for equal
 
-function inputEqual () {
+function inputEqual() {
     const inputValue = parseFloat(displayValue);
-    console.log(inputValue);
-    console.log(calculationArray);
 
-    if (calculationArray.length >= 1) {
-        calculationArray.push(inputValue);
-        if (calculationArray.length >= 3) {
-            const firstNumber = calculationArray[0];
-            const lastOperator = calculationArray[1];
-            const result = operate(lastOperator, firstNumber, inputValue);
-            displayValue = result;
-            calculationArray = [result];
-            updateDisplay();
-        } else {
-            displayValue = "ERROR";
-            updateDisplay();
-        }
-    } else {
+    if (AfterOperator || calculationArray.length === 0) {
         displayValue = "ERROR";
         updateDisplay();
+        AfterEqual = true;
+        return;
     }
+
+    calculationArray.push(inputValue);
+    
+    if (calculationArray.length >= 3) {
+        const firstNumber = calculationArray[0];
+        const lastOperator = calculationArray[1];
+        const result = operate(lastOperator, firstNumber, inputValue);
+        displayValue = result;
+        calculationArray = [result];
+    } else {
+        displayValue = "ERROR";
+    }
+    
+    updateDisplay();
     AfterEqual = true;
 }
-
 const equalBtn = document.querySelector(".equal");
 
 equalBtn.addEventListener("click", () => {
     return inputEqual();
 })
 
+
+function clearAll() {
+    calculationArray = [];
+    displayValue = "0";
+    AfterEqual = false;
+    AfterOperator = false;
+    updateDisplay();
+}
+
+const clearbtn = document.querySelector(".clear");
+
+clearbtn.addEventListener("click", () => clearAll());
